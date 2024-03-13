@@ -1,6 +1,14 @@
 # LLM-auto-labeler
 Utilize LLM's to create datasets that will power smaller models! 
 
+### This repo contains:
+- Extracting labels from job advert descriptions
+- Processing and cleaning the output from the LLM.
+- Creating dataset to fine-tune reranker
+- Code for loading the model in C# .NET
+
+### Description
+
 LLMs are very impressive, but the bigger they are, the slower they become.
 
 I wanted to be able to display a job advert description and highlight the different kinds of requirements. I tested different small-sized LLMs and NER, but they weren't up to the job.
@@ -31,7 +39,6 @@ I formated the query trigger so they had "Example of" before the label to provid
 You can find the model on huggingface: https://huggingface.co/MarcusLoren/Reranker-job-description
 I provided code for both usage for .NET (C#) in python.
 
-
 Fine-tuned querys:
 ```
 Example of education
@@ -45,7 +52,13 @@ Example of breadtext
 Example of company culture
 Example of job duties
 ```
+ 
+### Results:
+Not perfect since I only trained on a relative small dataset and the labels were bit too ambiguous e.g. work experience can count as qualfications or hard skills. 
+<br/>
+<img width="560" alt="textclass" src="https://github.com/MarcusLoppe/LLM-auto-labeler/assets/65302107/8ce4ed28-08aa-4ccc-8d9c-80b9b03f08df">
 
+### .NET (C#) Code for usage of the model
 Usage for .NET (C#) requires Microsoft.ML to load the model and for the tokenizer: BlingFire
 
  ```
