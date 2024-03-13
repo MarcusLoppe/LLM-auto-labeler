@@ -7,6 +7,12 @@ Utilize LLM's to create datasets that will power smaller models!
 - Creating dataset to fine-tune reranker
 - Code for loading the model in C# .NET
 
+ 
+### Results:
+Not perfect since I only trained on a relative small dataset and the labels were bit too ambiguous e.g. work experience can count as qualfications or hard skills. 
+<br/>
+<img width="560" alt="textclass" src="https://github.com/MarcusLoppe/LLM-auto-labeler/assets/65302107/8ce4ed28-08aa-4ccc-8d9c-80b9b03f08df">
+
 ### Description
 
 LLMs are very impressive, but the bigger they are, the slower they become.
@@ -15,20 +21,8 @@ I wanted to be able to display a job advert description and highlight the differ
 
 Tested using the text classifier [bge-reranker-base](https://huggingface.co/BAAI/bge-reranker-base), which was both fast and decently accurate. The next challenge was to fine-tune it; unfortunately, there isn't any dataset that contains, e.g., education or qualifications requirements.
 
-I used Mistral 7B to extract the labels below from 4k job adverts in the [LinkedIn Job Postings - 2023](https://www.kaggle.com/datasets/arshkon/linkedin-job-postings). 
+I used Mistral 7B to extract the labels from 4k job adverts in the [LinkedIn Job Postings - 2023](https://www.kaggle.com/datasets/arshkon/linkedin-job-postings). 
 You can find out how I did this in the notebook: LLM_labels_extractor.ipynb
-```
-Education
-Certification
-Qualifications
-Work experience
-Hard skills
-Soft skills 
-Benefits
-Breadtext
-Company culture 
-Job duties
-```
  
 I instructed it to output in JSON format, but since the LLMs are not 100% accurate, it didn't always output only or correct JSON. I had to preprocess and clean the data beforehand. Then, I created a dataset of the extracted data along with the negatives, which I used the text in the job description that was not used or identified as a label by the LLM. 
 You can find out how I did this in: DatasetCreator.ipynb
@@ -39,7 +33,7 @@ I formated the query trigger so they had "Example of" before the label to provid
 You can find the model on huggingface: https://huggingface.co/MarcusLoren/Reranker-job-description
 I provided code for both usage for .NET (C#) in python.
 
-Fine-tuned querys:
+Model specific fine-tuned querys:
 ```
 Example of education
 Example of certification
@@ -52,14 +46,10 @@ Example of breadtext
 Example of company culture
 Example of job duties
 ```
- 
-### Results:
-Not perfect since I only trained on a relative small dataset and the labels were bit too ambiguous e.g. work experience can count as qualfications or hard skills. 
-<br/>
-<img width="560" alt="textclass" src="https://github.com/MarcusLoppe/LLM-auto-labeler/assets/65302107/8ce4ed28-08aa-4ccc-8d9c-80b9b03f08df">
 
 ### .NET (C#) Code for usage of the model
 Usage for .NET (C#) requires Microsoft.ML to load the model and for the tokenizer: BlingFire
+ONNX model: https://huggingface.co/MarcusLoren/Reranker-job-description/blob/main/Reranker.onnx
 
  ```
     public class RankerInput
